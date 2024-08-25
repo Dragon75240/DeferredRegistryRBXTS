@@ -1,0 +1,1 @@
+export const Registers: Record<string, object> = {};

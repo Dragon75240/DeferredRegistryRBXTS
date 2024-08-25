@@ -15,7 +15,7 @@ export class DeferredRegister<RegistryType> {
 	}
 
 	/**
-	 * @param {string name - the name of the object to add
+	 * @param {string} name - the name of the object to add
 	 * @param {() => T} instance - the instance of object to add
 	 * @returns {RegistryObject<T>} returns the registryobject created
 	 */
