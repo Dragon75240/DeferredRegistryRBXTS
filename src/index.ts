@@ -1,10 +1,13 @@
+/**
+ * @template RegistryType - The type of Register to use
+ */
 export class DeferredRegister<RegistryType> {
 	private _index: Record<string, object>;
 	private localRegistrar: { [key: string]: RegistryType } = {};
 
 	/**
 	 *
-	 * @param registry Takes in a registry to register to
+	 * @param {Registry<RegistryType>} registry - Takes in a registry to register to
 	 */
 	constructor(registry: Registry<RegistryType>) {
 		this._index = {};
@@ -17,7 +20,7 @@ export class DeferredRegister<RegistryType> {
 	/**
 	 * @param {string} name - the name of the object to add
 	 * @param {() => T} instance - the instance of object to add
-	 * @returns {RegistryObject<T>} returns the registryobject created
+	 * @returns {RegistryObject<T>} - returns the registryobject created
 	 */
 	public register(name: string, instance: RegistryType): RegistryObject<RegistryType> {
 		const registryObj: RegistryObject<RegistryType> = new RegistryObject<RegistryType>(instance);
