@@ -74,14 +74,14 @@ export class Registry<T> {
 
 		this.registeredItems = {};
 
-		this.registryEvent.Event.Connect((name: string, registeringItem: unknown) => {
+		this.registryEvent.Event.Connect((name: string, registeringItem: unknown ) => {
 			if (!typeIs(registeringItem, "function")) {
 				error("item: " + name + " wasnt a callback")
 			}
 			let registeringItemData: Record<string, object> = registeringItem();
 			
 			if (!typeIs(registeringItemData.toObject, "function")){
-				error("this error wont fucking happen lmao")
+				error("please add a toObject function inside of registry part: " + name)
 			}
 			this.Register(name, registeringItemData);
 		});
