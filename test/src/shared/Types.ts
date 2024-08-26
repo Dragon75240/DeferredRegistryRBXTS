@@ -1,6 +1,7 @@
-interface IItem {
+interface IItem extends IToObject {
 	name: string;
 	metadata: Record<string, object>;
+	toObject(): object;
 }
 
 export class Item implements IItem {
@@ -16,4 +17,12 @@ export class Item implements IItem {
 		this.name = name;
 		this.metadata = metadata;
 	}
+
+	toObject(): object {
+		return {[this.name]: this.metadata};
+	}
+}
+
+export interface IToObject {
+    toObject(): object;
 }

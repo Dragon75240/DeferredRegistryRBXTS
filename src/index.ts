@@ -1,20 +1,19 @@
+import { IToObject } from "./interfaces";
+
 /**
  * @template RegistryType - The type of Register to use
  */
-export class DeferredRegister<RegistryType> {
+export class DeferredRegister<RegistryType extends IToObject> {
 	private _index: Record<string, object>;
-	private localRegistrar: { [key: string]: RegistryType } = {};
+	private localIndex: Record<string, object>;
 
 	/**
 	 *
 	 * @param {Registry<RegistryType>} registry - Takes in a registry to register to
 	 */
 	constructor(registry: Registry<RegistryType>) {
-		this._index = {};
-
-		if (!this._index[registry.name]) {
-			this._index[registry.name] = this.localRegistrar;
-		}
+		this._index = {[registry.name]: {}};
+        this.localIndex = this._index;
 	}
 
 	/**
@@ -24,9 +23,9 @@ export class DeferredRegister<RegistryType> {
 	 */
 	public register(name: string, instance: RegistryType): RegistryObject<RegistryType> {
 		const registryObj: RegistryObject<RegistryType> = new RegistryObject<RegistryType>(instance);
-		this.localRegistrar[name] = instance;
+		this.localIndex[name] = instance;
 
-		print(this)
+		print(this);
 
 		return registryObj;
 	}
@@ -43,7 +42,7 @@ class RegistryObject<ObjType> implements IRegistryObject<ObjType> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @returns Value of the RegistryObject<ObjType>
 	 */
 	public get(): ObjType {
