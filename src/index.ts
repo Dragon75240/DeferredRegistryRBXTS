@@ -34,7 +34,7 @@ export class DeferredRegister<RegistryType extends IToObject> {
 /**
  * I tried to clone down RegistryObject ( from ForgeMDK ) as best I could with this
  */
-class RegistryObject<ObjType> implements IRegistryObject<ObjType> {
+export class RegistryObject<ObjType> implements IRegistryObject<ObjType> {
 	value: ObjType;
 
 	constructor(value: ObjType) {
