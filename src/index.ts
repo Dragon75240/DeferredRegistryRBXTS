@@ -1,19 +1,21 @@
-import { IToObject } from "./interfaces";
+import { IRegistryObject, IToObject } from "./interfaces";
+
+var Registries: Record<string, object> = {};
 
 /**
  * @template RegistryType - The type of Register to use
  */
 export class DeferredRegister<RegistryType extends IToObject> {
 	private _index: Record<string, object>;
-	private localIndex: Record<string, object>;
+	private localIndex: Record<string, RegistryObject<RegistryType>>;
 
 	/**
-	 *
+	 * Makes a new DeferredRegistery inside of the _index
 	 * @param {Registry<RegistryType>} registry - Takes in a registry to register to
 	 */
 	constructor(registry: Registry<RegistryType>) {
-		this._index = {[registry.name]: {}};
-        this.localIndex = this._index;
+		this._index = Registries[registry.name] as Record<string, object>;
+		this.localIndex = this._index[registry.name] as Record<string, RegistryObject<RegistryType>>;
 	}
 
 	/**
@@ -23,7 +25,7 @@ export class DeferredRegister<RegistryType extends IToObject> {
 	 */
 	public register(name: string, instance: RegistryType): RegistryObject<RegistryType> {
 		const registryObj: RegistryObject<RegistryType> = new RegistryObject<RegistryType>(instance);
-		this.localIndex[name] = instance;
+		this.localIndex;
 
 		print(this);
 
@@ -32,11 +34,16 @@ export class DeferredRegister<RegistryType extends IToObject> {
 }
 
 /**
- * I tried to clone down RegistryObject ( from ForgeMDK ) as best I could with this
+ * Represents an object registered in a registry.
+ * @template ObjType - The type of the object being registered.
  */
-export class RegistryObject<ObjType> implements IRegistryObject<ObjType> {
+class RegistryObject<ObjType> implements IRegistryObject<ObjType> {
 	value: ObjType;
 
+	/**
+	 * Creates a new RegistryObject.
+	 * @param {ObjType} value - The value to store in this RegistryObject.
+	 */
 	constructor(value: ObjType) {
 		this.value = value;
 	}
@@ -48,11 +55,6 @@ export class RegistryObject<ObjType> implements IRegistryObject<ObjType> {
 	public get(): ObjType {
 		return this.value;
 	}
-}
-
-export interface IRegistryObject<T> {
-	value?: T;
-	get(): T;
 }
 
 export class Registry<T> {
