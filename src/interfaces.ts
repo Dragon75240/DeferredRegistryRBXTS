@@ -1,14 +1,4 @@
 /**
- * uhhh this interface has a function i guess
- */
-export interface IToObject {
-	/**
-	 * this function returns the object version of the type implementing
-	 */
-	toObject(): object;
-}
-
-/**
  * Interface for matching class -- used outside instead of the class
  */
 export interface IRegistryObject<T> {

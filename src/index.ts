@@ -1,11 +1,11 @@
-import { IRegistryObject, IToObject } from "./interfaces";
+import { IRegistryObject } from "./interfaces";
 
 let Registries: Record<string, object> = {};
 
 /**
  * @template RegistryType - The type of Register to use
  */
-export class DeferredRegister<RegistryType extends IToObject> {
+export class DeferredRegister<RegistryType> {
 	private _index: Record<string, RegistryObject<RegistryType>>;
 
 	/**
