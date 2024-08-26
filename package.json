@@ -7,7 +7,7 @@
     "build": "rbxtsc",
     "watch": "rbxtsc -w",
     "prepublishOnly": "npm run build",
-    "typedoc": "typedoc .\\src\\*.ts"
+    "typedoc": "typedoc src/**/*.ts"
   },
   "keywords": [],
   "author": "",
