@@ -68,20 +68,20 @@ export class Registry<T> {
 
 	private registeredItems: Record<string, object>;
 
-	constructor(name: string) {
+	constructor(name: string, registryTable?: Record<string, object>) {
 		this.name = name;
 		this.registryEvent = new Instance("BindableEvent");
 
-		this.registeredItems = {};
+		this.registeredItems = {} ?? registryTable;
 
-		this.registryEvent.Event.Connect((name: string, registeringItem: unknown ) => {
+		this.registryEvent.Event.Connect((name: string, registeringItem: unknown) => {
 			if (!typeIs(registeringItem, "function")) {
 				error("item: " + name + " wasnt a callback")
 			}
 			let registeringItemData: Record<string, object> = registeringItem();
 			
 			if (!typeIs(registeringItemData.toObject, "function")){
-				error("please add a toObject function inside of registry part: " + name)
+				error("this error wont happen, unless you forgot a toObject method in lua ( inside of a rbxts component )")
 			}
 			this.Register(name, registeringItemData);
 		});
@@ -89,5 +89,7 @@ export class Registry<T> {
 
 	private Register(name: string, data: object) {
 		this.registeredItems[name] = data;
+
+		print(this.registeredItems)
 	}
 }

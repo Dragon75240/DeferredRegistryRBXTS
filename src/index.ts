@@ -81,7 +81,7 @@ export class Registry<T> {
 			let registeringItemData: Record<string, object> = registeringItem();
 			
 			if (!typeIs(registeringItemData.toObject, "function")){
-				error("this error wont fucking happen lmao")
+				error("this error wont happen, unless you forgot a toObject method in lua ( inside of a rbxts component )")
 			}
 			this.Register(name, registeringItemData);
 		});
@@ -89,5 +89,7 @@ export class Registry<T> {
 
 	private Register(name: string, data: object) {
 		this.registeredItems[name] = data;
+
+		print(this.registeredItems)
 	}
 }
