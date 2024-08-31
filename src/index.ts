@@ -1,4 +1,23 @@
-import { IRegistryObject, IObjectable } from "./interfaces";
+/**
+ * Interface for matching class -- used outside instead of the class
+ * @template {T} - Type of RegistryObject to create ( matches DeferredRegistry type)
+ */
+export interface IRegistryObject<T> {
+	/**
+	 * Value of registry object
+	 * @returns {T} - Stores the value of the RegistryObject
+	 */
+	value: T;
+	/**
+	 * @returns {T} - Returns a RegistryObject's type **VALUE**
+	 */
+	get(): T;
+}
+
+export interface IObjectable {
+	toObject(): object;
+}
+
 
 let Registries: Record<string, object> = {};
 
@@ -62,7 +81,7 @@ export class RegistryObject<ObjType> implements IRegistryObject<ObjType> {
 	}
 }
 
-export class Registry<T> {
+export class Registry<T>  {
 	public name: string;
 	public registryEvent: BindableEvent;
 
@@ -74,22 +93,15 @@ export class Registry<T> {
 
 		this.registeredItems = {};
 
-		this.registryEvent.Event.Connect((name: string, registeringItem: unknown) => {
-			if (!typeIs(registeringItem, "function")) {
-				error("item: " + name + " wasnt a callback")
+		this.registryEvent.Event.Connect((name: string, registeringItem: () => Record<string, object>) => {			
+			if (!typeIs(registeringItem().toObject, "function")){
+				error("this error happened on: " + name + " Record :" + registeringItem())
 			}
-			let registeringItemData: Record<string, object> = registeringItem();
-			
-			if (!typeIs(registeringItemData.toObject, "function")){
-				error("this error wont happen, unless you forgot a toObject method in lua ( inside of a rbxts component )")
-			}
-			this.Register(name, registeringItemData);
+			this.Register(name, registeringItem());
 		});
 	}
 
 	private Register(name: string, data: object) {
 		this.registeredItems[name] = data;
-
-		print(this.registeredItems)
 	}
 }
